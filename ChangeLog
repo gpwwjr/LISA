@@ -1,3 +1,15 @@
+2021-01-30  George Williams  <george.p.williams@pobox.com>
+
+	* incorporate modifications I've made previously:
+           - src/core/fact-parser.lisp
+               fix syntax error:
+                 In BUILD-ONE-SLOT inside CREATE-TEMPLATE-CLASS-SLOTS:
+                   In the call to ERROR
+           - src/debugger/lisa-debugger.lisp
+               make debugger tolerate empty input lines
+           - src/reflect/reflect.lisp
+               fix conditional compilation to support CCL (Clozure CL)
+
 2007-09-17  David E. Young  <youngde@pobox.com>
 
 	* Release 3.2
