@@ -150,7 +150,9 @@
          (progn
            (format t "LISA-DEBUG[~D]: " count)
            (force-output)
-           (print (eval (read-from-string (read-line))))
+           (let ((input (read-line)))
+             (when (> (length input) 0)
+               (print (eval (read-from-string input)))))
            (terpri))
        (error (e)
               (cerror "Remain in the LISA debugger." e)
