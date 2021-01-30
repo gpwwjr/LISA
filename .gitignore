@@ -1,0 +1,17 @@
+*~
+#*
+*.ilg
+*.ind
+*.lof
+*.aux
+*.bbl
+*.pdf
+*.blg
+*.idx
+*.log
+*.xml
+*.toc
+ non-git-controlled
+Docs/- texstudio.app
+.DS_Store
+
