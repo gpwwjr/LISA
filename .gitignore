@@ -11,7 +11,7 @@
 *.log
 *.xml
 *.toc
- non-git-controlled
+-non-git-controlled
 Docs/- texstudio.app
 .DS_Store
 
