@@ -28,12 +28,13 @@
 ;;; The code contained with the following MACROLET form courtesy of the PORT
 ;;; module, CLOCC project, http://clocc.sourceforge.net.
 
-#+(or allegro clisp cmu cormanlisp lispworks lucid sbcl)
+#+(or allegro clisp cmu cormanlisp lispworks lucid sbcl ccl)
 ;; we use `macrolet' for speed - so please be careful about double evaluations
 ;; and mapping (you cannot map or funcall a macro, you know)
 (eval-when (:compile-toplevel :load-toplevel :execute)
   (macrolet ((class-slots* (class)
                #+allegro `(clos:class-slots ,class)
+               #+ccl `(ccl:class-slots ,class)
                #+clisp `(clos:class-slots ,class)
                #+cmu `(pcl::class-slots ,class)
                #+cormanlisp `(cl:class-slots ,class)
@@ -49,6 +50,7 @@
              (slot-name (slot)
                #+(and allegro (not (version>= 6))) `(clos::slotd-name ,slot)
                #+(and allegro (version>= 6)) `(clos:slot-definition-name ,slot)
+               #+ccl `(ccl:slot-definition-name ,slot)
                #+clisp `(clos:slot-definition-name ,slot)
                #+cmu `(slot-value ,slot 'pcl::name)
                #+cormanlisp `(getf ,slot :name)
@@ -59,6 +61,7 @@
                #+(and allegro (not (version>= 6))) `(clos::slotd-initargs ,slot)
                #+(and allegro (version>= 6))
                `(clos:slot-definition-initargs ,slot)
+               #+ccl `(ccl:slot-definition-initargs ,slot)
                #+clisp `(clos:slot-definition-initargs ,slot)
                #+cmu `(slot-value ,slot 'pcl::initargs)
                #+cormanlisp `(getf ,slot :initargs)
@@ -71,6 +74,7 @@
                `(clos::slotd-allocation ,slot)
                #+(and allegro (version>= 6))
                `(clos:slot-definition-allocation ,slot)
+               #+ccl `(ccl:slot-definition-allocation ,slot)
                #+clisp `(clos:slot-definition-allocation ,slot)
                #+cmu `(pcl::slot-definition-allocation ,slot)
                #+cormanlisp `(getf ,slot :allocation)
@@ -114,9 +118,17 @@ initargs for all slots are returned, otherwise only the slots with
 (defun class-finalized-p (class)
   (clos:class-finalized-p class))
 
+#+ccl
+(defun class-finalized-p (class)
+  (ccl:class-finalized-p class))
+
 #+clisp
 (defun finalize-inheritance (class)
   (clos:finalize-inheritance class))
+
+#+ccl
+(defun finalize-inheritance (class)
+  (ccl:finalize-inheritance class))
 
 (defun is-standard-classp (class)
   (or (eq (class-name class) 'standard-object)
@@ -125,9 +137,11 @@ initargs for all slots are returned, otherwise only the slots with
 (defun find-direct-superclasses (class)
   #+:sbcl
   (remove-if #'is-standard-classp (sb-mop:class-direct-superclasses class))
-  #-:sbcl
-  (remove-if #'is-standard-classp (clos:class-direct-superclasses class)))
-             
+  #-(or :sbcl :ccl)
+  (remove-if #'is-standard-classp (clos:class-direct-superclasses class))
+  #+ccl
+   (remove-if #'is-standard-classp (ccl:class-direct-superclasses class)))
+
 (defun class-all-superclasses (class-or-symbol)
   (labels ((find-superclasses (class-list superclass-list)
              (let ((class (first class-list)))
