@@ -37,7 +37,7 @@
                  template
                (unless (eq keyword 'slot)
                  (error 'class-parsing-error :class-name class-name
-                        :text "unrecognized keyword: ~A" keyword))
+                        :text (format nil "unrecognized keyword: ~A" keyword)))
                `(,slot-name
                  :initarg ,(intern (symbol-name slot-name) 'keyword)
                  :initform
