@@ -138,6 +138,21 @@
   (print-unreadable-object (self strm :type nil :identity t)
     (format strm "~A ; id ~D" (fact-name self) (fact-id self))))
 
+(defun fact (id)
+  (let ((facts (get-fact-list (inference-engine))))
+    (dolist (fact facts)
+      (if (= id (fact-id fact))
+          (return fact)))))
+
+(defun ppfact (id)
+   (let ((fact (fact id)))
+    (format t "~S~%" fact)
+     (maphash #'(lambda (slot value)
+                  (format t " - Slot: ~S, Value: ~S~%"
+                          slot value))
+              (fact-slot-table fact))
+     (values)))
+
 (defmethod initialize-instance :after ((self fact) &key (slots nil)
                                                         (instance nil))
   "Initializes a FACT instance. SLOTS is a list of slot name / value pairs,
