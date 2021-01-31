@@ -1,14 +1,25 @@
-2021-01-30  George Williams  <george.p.williams@pobox.com>
+2021-01-30..2021-01-31  George Williams  <george.p.williams@pobox.com>
 
-	* incorporate modifications I've made previously:
+	* bug fixes:
            - src/core/fact-parser.lisp
                fix syntax error:
                  In BUILD-ONE-SLOT inside CREATE-TEMPLATE-CLASS-SLOTS:
                    In the call to ERROR
-           - src/debugger/lisa-debugger.lisp
-               make debugger tolerate empty input lines
+	* extensions
            - src/reflect/reflect.lisp
                fix conditional compilation to support CCL (Clozure CL)
+           - src/debugger/lisa-debugger.lisp
+               make debugger tolerate empty input lines
+	   - src/core/fact.lisp
+	       (fact <fact-id>): the documentation says this function
+	           exists, but it was not implemented; it is now
+	       (ppfact <fact-id>): new function that pretty-prints a
+	           fact, it's slots and their values.
+	   - src/packages/pkgdecl.lisp
+	       exported the following symbols from the LISA package
+	       into the LISA-USER package:
+	           fact-slot-table, get-fact-list, get-slot-value,
+	           ppfact
 
 2007-09-17  David E. Young  <youngde@pobox.com>
 
