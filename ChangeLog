@@ -1,25 +1,40 @@
-2021-01-30..2021-01-31  George Williams  <george.p.williams@pobox.com>
+2021-01-30..2021-02-02  George Williams  <george.p.williams@pobox.com>
 
 	* bug fixes:
-           - src/core/fact-parser.lisp
+          - src/core/fact-parser.lisp
                fix syntax error:
                  In BUILD-ONE-SLOT inside CREATE-TEMPLATE-CLASS-SLOTS:
                    In the call to ERROR
 	* extensions
-           - src/reflect/reflect.lisp
+          - src/reflect/reflect.lisp
                fix conditional compilation to support CCL (Clozure CL)
-           - src/debugger/lisa-debugger.lisp
+          - src/debugger/lisa-debugger.lisp
                make debugger tolerate empty input lines
-	   - src/core/fact.lisp
-	       (fact <fact-id>): the documentation says this function
-	           exists, but it was not implemented; it is now
-	       (ppfact <fact-id>): new function that pretty-prints a
-	           fact, it's slots and their values.
-	   - src/packages/pkgdecl.lisp
+	     - src/core/fact.lisp
+	          (fact <fact-id>): the documentation says this function
+	             exists, but it was not implemented; it is now
+	          (ppfact <fact-id>): new function that pretty-prints a
+	             fact, it's slots and their values.
+          - src/packages/pkgdecl.lisp
 	       exported the following symbols from the LISA package
 	       into the LISA-USER package:
-	           fact-slot-table, get-fact-list, get-slot-value,
-	           ppfact
+	          fact-slot-table, get-fact-list, get-slot-value, ppfact
+	* documentation updated:
+	     - Show the correct form for loading the debugger is:
+	          (require 'lisa-debugger (lisa-system::lisa-debugger))
+	     - (consider-taxonomy): doc says default is nil, it's actually t
+		     Added additional information about this per David Young in
+		     email to the Lisa-users list on 2005-09-09 18:05:27
+	     - Updated the defrule documentation to show:
+		     - OR pattern is documented, but not implemented;
+			  and pointed to an experimental implementation by
+			  Jakub Higersberger (Ramarren)
+		     - documentation string can be included, and how
+		       to access it
+	     - Documented find-rule, used to find rule instances
+	     - Documented ppfact, used to pretty-print facts
+	     - Added note about certainty factors to the list of
+	       Things Yet to Do
 
 2007-09-17  David E. Young  <youngde@pobox.com>
 
