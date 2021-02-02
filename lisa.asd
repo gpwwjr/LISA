@@ -145,6 +145,7 @@
 
 ;;; Sets up the environment so folks can use the non-portable form of REQUIRE
 ;;; with some implementations...
+;;; e.g., (require 'lisa-debugger (lisa-system::lisa-debugger))
 
 #+:allegro
 (setf system:*require-search-list*
@@ -155,7 +156,7 @@
 (setf custom:*load-paths*
   (append custom:*load-paths* `(,(lisa-debugger))))
 
-#+:openmcl
+#+:openmcl ; which also covers Clozure CL
 (pushnew (pathname-directory (lisa-debugger)) ccl:*module-search-path* :test #'equal)
 
 #+:lispworks
