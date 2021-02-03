@@ -5,6 +5,12 @@
                Fix syntax error:
                  In BUILD-ONE-SLOT inside CREATE-TEMPLATE-CLASS-SLOTS:
                    In the call to ERROR
+          - src/
+               - Fix debugger compiler warning:
+	          In (RUN-ENGINE :AFTER (RETE)) inside an anonymous lambda form:
+	              Unused lexical variable STEP
+- add examples, including toh.lisp
+
 	* extensions
           - src/reflect/reflect.lisp
                Fix conditional compilation to support CCL (Clozure CL)
