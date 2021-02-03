@@ -5,7 +5,7 @@
                Fix syntax error:
                  In BUILD-ONE-SLOT inside CREATE-TEMPLATE-CLASS-SLOTS:
                    In the call to ERROR
-          - src/
+          - src/debugger/lisa-debugger.lisp
                - Fix debugger compiler warning:
 	          In (RUN-ENGINE :AFTER (RETE)) inside an anonymous lambda form:
 	              Unused lexical variable STEP
