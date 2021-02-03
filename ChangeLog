@@ -17,7 +17,7 @@
                Fix conditional compilation to support CCL (Clozure CL)
           - src/debugger/lisa-debugger.lisp
                Make debugger tolerate empty input lines
-	     - src/core/fact.lisp
+          - src/core/fact.lisp
 	          (fact <fact-id>): the documentation says this function
 	             exists, but it was not implemented; it is now
 	          (ppfact <fact-id>): new function that pretty-prints a
@@ -26,7 +26,7 @@
 	          Exported the following symbols from the LISA package
 	          into the LISA-USER package:
 	               fact-slot-table, get-fact-list, get-slot-value, ppfact
-	     - src/debugger/lisa-debugger.lisp and
+          - src/debugger/lisa-debugger.lisp and
 	       src/core/watches.lisp
 	          Added the ability in the debugger to watch bindings.
 	          See the documentation for details.
