@@ -1,24 +1,28 @@
-2021-01-30..2021-02-02  George Williams  <george.p.williams@pobox.com>
+2021-01-30..2021-02-03  George Williams  <george.p.williams@pobox.com>
 
 	* bug fixes:
           - src/core/fact-parser.lisp
-               fix syntax error:
+               Fix syntax error:
                  In BUILD-ONE-SLOT inside CREATE-TEMPLATE-CLASS-SLOTS:
                    In the call to ERROR
 	* extensions
           - src/reflect/reflect.lisp
-               fix conditional compilation to support CCL (Clozure CL)
+               Fix conditional compilation to support CCL (Clozure CL)
           - src/debugger/lisa-debugger.lisp
-               make debugger tolerate empty input lines
+               Make debugger tolerate empty input lines
 	     - src/core/fact.lisp
 	          (fact <fact-id>): the documentation says this function
 	             exists, but it was not implemented; it is now
 	          (ppfact <fact-id>): new function that pretty-prints a
 	             fact, it's slots and their values.
           - src/packages/pkgdecl.lisp
-	       exported the following symbols from the LISA package
-	       into the LISA-USER package:
-	          fact-slot-table, get-fact-list, get-slot-value, ppfact
+	          Exported the following symbols from the LISA package
+	          into the LISA-USER package:
+	               fact-slot-table, get-fact-list, get-slot-value, ppfact
+	     - src/debugger/lisa-debugger.lisp and
+	       src/core/watches.lisp
+	          Added the ability in the debugger to watch bindings.
+	          See the documentation for details.
 	* documentation updated:
 	     - Show the correct form for loading the debugger is:
 	          (require 'lisa-debugger (lisa-system::lisa-debugger))

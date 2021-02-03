@@ -167,10 +167,13 @@
           (*suspended-rule* self)
           (*tokens* tokens))
       (format t "Stopping in rule ~S~%" (rule-name self))
+      (when *watching-bindings*
+        (bindings))
       (debugger-repl)))
   (call-next-method))
 
 (defmethod run-engine :after ((self rete) &optional step)
+  (declare (ignore step))
   (leave-debugger))
 
 (defmethod forget-rule :before ((self rete) (rule-name symbol))
