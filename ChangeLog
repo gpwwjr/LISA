@@ -11,6 +11,8 @@
 	              Unused lexical variable STEP
 
 	* extensions
+	     - misc/toh.lisp
+	          Added a new demo file to solve the Towers of Hanoi puzzle
           - src/reflect/reflect.lisp
                Fix conditional compilation to support CCL (Clozure CL)
           - src/debugger/lisa-debugger.lisp
