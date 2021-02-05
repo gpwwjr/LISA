@@ -1,10 +1,14 @@
 ;;;; -*- Mode: LISP; Syntax: Common-Lisp; Package: LISA-USER; Base: 10. -*-
 
-;;;    Towers of Hanoi puzzle, recursive version, rev2 (goal-based)
+;;;    Towers of Hanoi puzzle, recursive version, rev3 (goal-based)
 ;;;    Written By:   George Williams
 
+;;;    This version uses deftemplate instead of defclass, and templates
+;;;    allow use of deffacts, resulting in a cleaner syntax all around.
+
+
 (in-package "LISA-USER")
-(lisa:consider-taxonomy)
+;(lisa:consider-taxonomy) ; not helpful when using deftemplate
 #|   ---- useful code fragments to paste into the listener ----
 (cl-user::lisa-app-setup)
 (require 'lisa-debugger (lisa-system::lisa-debugger))
@@ -28,18 +32,13 @@ being moved, and things happened out of order. And the startup magically
 assumed that the disks were already in-place. :(
 |#
 
-(defclass toh-fundamental () ())
+(deftemplate peg ()
+  (slot is)
+  (slot has-disks))
 
-(defclass peg (toh-fundamental)
-  ((is :initarg :is)
-   (has-disks :initarg :has-disks ;; a list of disk instances; topmost at front
-              :initform nil)
-   ))
-
-(defclass disk (toh-fundamental)
-  ((size :initarg :size)   ; size of the disk
-   (peg  :initarg :peg)    ; number of the peg it's on
-   ))
+(deftemplate disk ()
+  (slot size)
+  (slot peg))
 
 ;; ================================================================
 
@@ -51,19 +50,15 @@ but it works. Also, this is a pretty general mechanism (sans the application-spe
 arguments to the goals).
 |#
 
-(defclass goal (toh-fundamental)
-  ((is :initarg :is) ; the name of the goal: move (? or ? move-n, move-1)
-   (arg1 :initarg :arg1) ; #disks
-   (arg2 :initarg :arg2) ; source
-   (arg3 :initarg :arg3) ; destination
-   (arg4 :initarg :arg4  ; disk size
-         :initform nil)
-   (status :initarg :status)  ; values active/suspended/completed/check-completion
-   (subgoals :initarg :subgoals
-             :initform nil)
-   (supergoal :initarg :supergoal
-              :initform nil)
-   ))
+(deftemplate goal ()
+  (slot is)
+  (slot arg1)
+  (slot arg2)
+  (slot arg3)
+  (slot arg4)
+  (slot status)
+  (slot subgoals)
+  (slot supergoal))
 
 ;; ----------------------------------------------------------------
 
@@ -116,6 +111,7 @@ arguments to the goals).
 
 (defvar *ppfactsmode* nil)
 ;(setq *ppfactsmode* 'none)
+;(setq *ppfactsmode* nil)
 (setq *ppfactsmode* 'brief)
 (defvar *ppfacts-count* 0)
 (defun pptohfacts (&rest fmt-args)
@@ -417,45 +413,25 @@ To move n disks from one peg to another, do the following:
   =>
   (format t " *** all done ***~%"))
 
-;; A default rule to obtain a proper end, and retract every object whose
-;; ancestor is an instance of TOH-FUNDAMENTAL...
+;; Default rules to cleanup leftover facts
 
-(defrule cleanup (:salience -100)
-  (?fact (toh-fundamental))
+(defrule cleanup-disks (:salience -100)
+  (?fact (disk))
   =>
   (retract ?fact))
 
-;;; startup rule...
-
-(defrule startup-part1 ()
+(defrule cleanup-pegs (:salience -100)
+  (?fact (peg))
   =>
-  (assert ((make-instance 'peg :is 0)))
-  (assert ((make-instance 'peg :is 1)))
-  (assert ((make-instance 'peg :is 2)))
-  (assert
-   ((make-instance 'disk :size 1 :peg 0)))
-  (assert
-   ((make-instance 'disk :size 2 :peg 0)))
-  (assert
-   ((make-instance 'disk :size 3 :peg 0)))
-  (assert
-   ((make-instance 'disk :size 4 :peg 0)))
-#|
-  (assert
-   ((make-instance 'disk :size 5 :peg 0)))
-  (assert
-   ((make-instance 'disk :size 6 :peg 0)))
-  (assert
-   ((make-instance 'disk :size 7 :peg 0)))
-|#
-  ;; create the goal to run startup-part2
-  (assert ((make-goal-of nil 'startup-part2)))
-  )
+  (retract ?fact))
 
-#| ; As far as I can tell, this should work, but it doesn't, 
-   ; and I have yet to figure out why.
-   ; Note that the syntax is not as described in the documentation,
-   ; but it's the only thing I could get accepted by the parser.
+(defrule cleanup-goals (:salience -100)
+  (?fact (goal))
+  =>
+  (retract ?fact))
+
+;;; initial facts
+
 (deffacts setup-toh-facts ()
   (peg (is 0))
   (peg (is 1))
@@ -463,8 +439,21 @@ To move n disks from one peg to another, do the following:
   (disk (size 1) (peg 0))
   (disk (size 2) (peg 0))
   (disk (size 3) (peg 0))
-  (disk (size 4) (peg 0)))
+  (disk (size 4) (peg 0))
+#|
+  (disk (size 5) (peg 0))
+  (disk (size 6) (peg 0))
+  (disk (size 7) (peg 0))
 |#
+  (goal (is startup-part2) (status active)))
+
+;;; startup rule...
+
+(defrule startup-part1 ()
+  =>
+  ;; create the goal to run startup-part2
+  (assert (goal (is startup-part2) (status active)))
+  )
 
 (defrule startup-part2 ()
   (?goal (goal (is startup-part2)))
