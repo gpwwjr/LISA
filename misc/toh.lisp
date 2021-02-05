@@ -85,18 +85,18 @@ arguments to the goals).
     (when supergoal
       (if suspend-super
           (modify supergoal
-            (subgoals (append (lisa::get-slot-value supergoal 'subgoals)
+            (subgoals (append (get-slot-value supergoal 'subgoals)
                               (list ?subgoal-instance)))
             (status suspended))
           (modify supergoal
-            (subgoals (append (lisa::get-slot-value supergoal 'subgoals)
+            (subgoals (append (get-slot-value supergoal 'subgoals)
                               (list ?subgoal-instance))))))
     ?subgoal-instance))
 
 (defun finish-subgoal (goal supergoal)
   (modify supergoal
-          (subgoals (remove goal (lisa::get-slot-value supergoal 'subgoals))))
-  (let ((subgoals-of-super (lisa::get-slot-value supergoal 'subgoals)))
+          (subgoals (remove goal (get-slot-value supergoal 'subgoals))))
+  (let ((subgoals-of-super (get-slot-value supergoal 'subgoals)))
     (if subgoals-of-super
         (modify (first subgoals-of-super) (status active))
         ;; If there are not subgoals of the super, then it's
@@ -126,7 +126,7 @@ arguments to the goals).
       (apply #'format (cons t fmt-args))) ; t is the default output stream
     (unless (eq *ppfactsmode* 'brief)
       (format t "================Begin PPTOHFACTS================  # ~a ~%" *ppfacts-count*))
-    (let ((facts (lisa::get-fact-list (lisa::inference-engine)))
+    (let ((facts (get-fact-list (inference-engine)))
           ;; the following 3 arrays are indexed by peg number
           (peg-ids       (make-array 3 :initial-element 0))
           (disk-count    (make-array 3 :initial-element 0))
@@ -138,7 +138,7 @@ arguments to the goals).
       (dolist (fact facts)
         (let ((fact-name (fact-name fact))
               (fact-id (fact-id fact))
-              (slot-table (lisa::fact-slot-table fact)))
+              (slot-table (fact-slot-table fact)))
           (cond
            ((string= fact-name "PEG")
             (let ((peg# (gethash 'is slot-table)))
@@ -158,7 +158,7 @@ arguments to the goals).
       (dolist (disk-entry (sort disk-list #'< :key #'second))
         ; each element of disk-list is a list of the form (<disk-fact-id> <disk-size>)
         (let* ((disk-fact (fact (first disk-entry)))
-               (slot-table (lisa::fact-slot-table disk-fact)))
+               (slot-table (fact-slot-table disk-fact)))
           (format t "  disk ~a [id ~a] is on peg# ~a~%"
                   (gethash 'size slot-table)
                   (fact-id disk-fact)
@@ -174,7 +174,7 @@ arguments to the goals).
                       peg# (aref peg-ids peg#) (aref disk-count peg#))
               (dolist (disk (aref peg-has-disks peg#))
                 (format t " ~a[~a]"
-                        (lisa::get-slot-value disk 'size)
+                        (get-slot-value disk 'size)
                         (fact-id disk)))
               (terpri))
             (format t "  Peg ~a[~a] has no disks~%"
@@ -189,10 +189,10 @@ arguments to the goals).
               ; ordering will be: active or suspended
               (setq goals (sort goals
                                 #'(lambda (g1 g2)
-                                    (string-lessp (symbol-name (lisa::get-slot-value g1 'status))
-                                                  (symbol-name (lisa::get-slot-value g2 'status))))))
+                                    (string-lessp (symbol-name (get-slot-value g1 'status))
+                                                  (symbol-name (get-slot-value g2 'status))))))
               (dolist (goal goals)
-                (let* ((slot-table (lisa::fact-slot-table goal))
+                (let* ((slot-table (fact-slot-table goal))
                        (goal-is (gethash 'is slot-table)))
                   (format t "  Goal is: ~a [id ~a], status: ~a~%    args: ~a, ~a, ~a, ~a" ; note: no end-of-line
                           goal-is
@@ -214,7 +214,7 @@ arguments to the goals).
                     (otherwise (terpri)))
                   (if (gethash 'supergoal slot-table)
                       (let* ((supergoal (gethash 'supergoal slot-table))
-                             (sg-slot-table (lisa::fact-slot-table supergoal)))
+                             (sg-slot-table (fact-slot-table supergoal)))
                         (format t "    supergoal: ~a [id: ~a], status: ~a~%"
                                 (gethash 'is sg-slot-table)
                                 (fact-id supergoal)
@@ -366,11 +366,11 @@ To move n disks from one peg to another, do the following:
       (let ((?final-dst nil) ; if this stays nil, then we can't move the disk
             ?final-dst-peg
             ?final-dst-peg-has-disks
-            (disk-size (lisa::get-slot-value (first ?src-peg-has-disks) 'size))
+            (disk-size (get-slot-value (first ?src-peg-has-disks) 'size))
             (dst-top-disk-size (when ?dst-peg-has-disks
-                                 (lisa::get-slot-value (first ?dst-peg-has-disks) 'size)))
+                                 (get-slot-value (first ?dst-peg-has-disks) 'size)))
             (3rd-top-disk-size (when ?3rd-peg-has-disks
-                                 (lisa::get-slot-value (first ?3rd-peg-has-disks) 'size))))
+                                 (get-slot-value (first ?3rd-peg-has-disks) 'size))))
         ; try to set ?final-dst & related
         (cond
          ((or (null dst-top-disk-size)
