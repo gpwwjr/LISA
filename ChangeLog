@@ -14,6 +14,7 @@
           - misc/toh.lisp
                Added a new demo file to solve the Towers of Hanoi puzzle
                Removed lisa:: package references no longer required
+               Updated toh.lisp to use deftemplate, deffacts
           - src/reflect/reflect.lisp
                Fix conditional compilation to support CCL (Clozure CL)
           - src/debugger/lisa-debugger.lisp
@@ -32,6 +33,8 @@
 	          Added the ability in the debugger to watch bindings.
 	          See the documentation for details.
 	* documentation updated:
+	     - Clarified the discussion of deffacts to indicate that it only
+	       works with template-based facts
 	     - Show the correct form for loading the debugger is:
 	          (require 'lisa-debugger (lisa-system::lisa-debugger))
 	     - (consider-taxonomy): doc says default is nil, it's actually t
