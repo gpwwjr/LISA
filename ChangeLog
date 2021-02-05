@@ -1,4 +1,4 @@
-2021-01-30..2021-02-03  George Williams  <george.p.williams@pobox.com>
+2021-01-30..2021-02-05  George Williams  <george.p.williams@pobox.com>
 
 	* bug fixes:
           - src/core/fact-parser.lisp
@@ -13,6 +13,7 @@
 	* extensions
           - misc/toh.lisp
                Added a new demo file to solve the Towers of Hanoi puzzle
+               Removed lisa:: package references no longer required
           - src/reflect/reflect.lisp
                Fix conditional compilation to support CCL (Clozure CL)
           - src/debugger/lisa-debugger.lisp
