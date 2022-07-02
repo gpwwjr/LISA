@@ -38,7 +38,7 @@
   (let ((*ignore-this-instance* self))
     (call-next-method)))
 
-(defmethod (setf sb-mop:slot-value-using-class) :after
+(defmethod (setf sb-pcl:slot-value-using-class) :after
            (new-value (class standard-kb-class) instance slot)
   (declare (ignore new-value))
   (flet ((ignore-instance (object)
@@ -46,9 +46,9 @@
                 (eq object *ignore-this-instance*))))
     (unless (ignore-instance class)
       (mark-instance-as-changed 
-       instance :slot-id (sb-mop:slot-definition-name slot)))))
+       instance :slot-id (sb-pcl:slot-definition-name slot)))))
 
-(defmethod sb-mop:validate-superclass ((class standard-kb-class)
+(defmethod sb-pcl:validate-superclass ((class standard-kb-class)
                                 (superclass standard-class))
   t)
 
