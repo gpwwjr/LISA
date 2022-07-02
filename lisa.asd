@@ -94,13 +94,16 @@
                          (:file "lispworks-auto-notify")
                          #+:cmucl
                          (:file "cmucl-auto-notify")
+                         #+:sbcl
+                         (:file "sbcl-auto-notify")
                          #+:allegro
                          (:file "allegro-auto-notify"))
                         :serial t)
                (:module rete
                         :pathname "rete/reference/"
                         :components
-                        ((:file "node-tests")
+                        ((:file "inter-pattern-filter")
+                         (:file "node-tests")
                          (:file "shared-node")
                          (:file "successor")
                          (:file "node-pair")

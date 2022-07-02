@@ -54,9 +54,9 @@
 (define-condition class-parsing-error (parsing-error)
   ((class-name :initarg :class-name
                :initform nil
-               :reader class-name))
+               :reader parsed-class-name))
   (:report (lambda (condition strm)
-             (format strm "Class parsing error: ~A, ~A" (class-name condition) (text condition)))))
+             (format strm "Class parsing error: ~A, ~A" (parsed-class-name condition) (text condition)))))
 
 (define-condition rule-parsing-error (parsing-error)
   ((rule-name :initarg :rule-name
