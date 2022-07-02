@@ -23,10 +23,10 @@
 ;;; of LISA's control, are picked up via the MOP protocol and synchronized
 ;;; with KB facts.
 
-;;; cmu-auto-notify.lisp, derived from
+;;; sbcl-auto-notify.lisp, derived from
 ;;; $Id: cmucl-auto-notify.lisp,v 1.1 2005/07/30 22:36:33 youngde Exp $
 
-;;; This file courtesy of Fred Gilham.
+;;; This file courtesy of Bela Pecsek.
 
 (in-package "LISA")
 
