@@ -75,7 +75,7 @@
 	* This is Lisa release 3.0.
 	* Finally beginning a change log for this project.
 	* Added support for SBCL. Thanks to Rusian Kosolapov for
-  	  submitting some of the patches for this.
+	  submitting some of the patches for this.
 	* Fixed an ugly but subtle bug in Lisa's replace-rule
 	  mechanism. Whenever an existing rule was replaced with a new
 	  version, the old rule's root nodes were retained rather than being
@@ -86,6 +86,6 @@
 	  problem that led to this work.
 	* Streamlined Lisa's rule parser.
 	* Made the belief system a permanent part of Lisa. There's a
-          keyword arg change DEFRULE -- from :cf to :belief -- that will
+	  keyword arg change DEFRULE -- from :cf to :belief -- that will
 	  break existing code. Sorry for that.
 

@@ -13,6 +13,7 @@
 *.toc
 -non-git-controlled
 Docs/- texstudio.app
+contrib
 bin
 .DS_Store
 
