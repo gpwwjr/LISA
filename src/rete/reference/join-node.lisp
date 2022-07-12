@@ -60,11 +60,11 @@
 (defun remove-token-from-right-memory (join-node token)
   (forget-token (join-node-right-memory join-node) token))
 
-(defun left-memory-count (join-node)
-  (hash-table-count (join-node-left-memory join-node)))
+(defmethod left-memory-count ((self join-node))
+  (hash-table-count (join-node-left-memory self)))
 
-(defun right-memory-count (join-node)
-  (hash-table-count (join-node-right-memory join-node)))
+(defmethod right-memory-count ((self join-node))
+  (hash-table-count (join-node-right-memory self)))
 
 (defmethod test-tokens ((self join-node) left-tokens right-token)
   (token-push-fact left-tokens (token-top-fact right-token))
@@ -107,3 +107,6 @@
             (left-memory-count self)
             (right-memory-count self)
             (length (join-node-tests self)))))
+
+(defmethod add-slot-filter ((self join-node) slot)
+  (join-node-add-test self (make-inter-pattern-test slot)))

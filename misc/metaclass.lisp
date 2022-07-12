@@ -27,19 +27,23 @@
 (defclass standard-kb-class (standard-class) ())
 
 (defmethod initialize-instance :after ((self standard-kb-class) &rest initargs)
-  (dolist (slot (slot-value self 'clos::direct-slots))
-    (dolist (writer (clos:slot-definition-writers slot))
+  (dolist (slot (slot-value self #+sbcl 'sb-pcl::direct-slots #-sbcl 'clos::direct-slots))
+    (dolist (writer #+sbcl(sb-pcl:slot-definition-writers slot)
+                    #-sbcl(clos:slot-definition-writers slot))
       (let* ((gf (ensure-generic-function writer))
              (method-class
               (generic-function-method-class gf)))
         (multiple-value-bind (body initargs)
-            (clos:make-method-lambda
+            (#+sbcl sb-pcl:make-method-lambda
+             #-sbcl clos:make-method-lambda
              gf
              (class-prototype method-class)
              '(new-value object)
              nil
-             `(format t "setting slot ~S to ~S~%" ',(clos:slot-definition-name slot) new-value))
-          (clos:add-method
+             `(format t "setting slot ~S to ~S~%" ',(#+sbcl sb-pcl:slot-definition-name
+                                                     #-sbcl clos:slot-definition-nameslot) new-value))
+          (#+sbcl sb-pcl:add-method
+           #-sbcl clos:add-method
            gf
            (apply #'make-instance method-class
                   :function (compile nil body)
